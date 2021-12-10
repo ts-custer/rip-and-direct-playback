@@ -22,6 +22,7 @@ Make `rip_and_direct_playback.sh` and `stream_address_finder.sh` executable:
 ```
 $ chmod +x rip_and_direct_playback.sh
 $ chmod +x stream_address_finder.sh
+$ chmod +x print_csv.sh
 ```
 
 Start **rip-and-direct-playback**:

@@ -2,7 +2,7 @@
 
 A simple Bash script to record internet radio (aka "stream ripping") and playback the ripped audio file immediately. 
 
-The names of the ripped audio files contain a timestamp and the radio station name, e.g. `2021-12-09_16-15-00 New Classical FM.mp3`. The audio files will be stored in a new created subfolder `recordings`. So after you have stopped **rip-and-direct-playback** you can listen to them again (or delete them of course)!
+The names of the ripped audio files contain a timestamp and the radio station name, e.g. `2021-12-09_16-15-00 New Classical FM.mp3`. The audio files will be stored in a new created subfolder "recordings". So after you have stopped **rip-and-direct-playback** you can listen to them again (or delete them of course)!
 
 ## Prerequisites
 
@@ -54,15 +54,17 @@ You will see:
 Finding the real stream address:
 http://sc8.radiocaroline.net:8040/; -> http://sc8.radiocaroline.net:8040/;
 Starting recording.. OK
-Waiting.. OK
+Writing file ./recordings/2021-12-10_12-07-17 Radio Caroline.mp3
 Starting playback.. OK
 
 VLC media player 3.0.9.2 Vetinari (revision 3.0.9.2-0-gd4c1aefe4d)
-[000056304177c890] dummy interface: using the dummy interface module...
+[000055f8df350300] dummy interface: using the dummy interface module...
 
 Enter number of the station to record and play (2)..
 ```
-Then just press Enter again to record and listen the second station or enter the number of the station you would like to hear.
+Note that the record file "2021-12-10_12-07-17 Radio Caroline.mp3" is stored in the new created subfolder "recordings".
+
+Press Enter again to record and listen the second station or enter the number of the station you would like to hear.
 
 Enter "s" to see the station list again, "r" to restarting the playback (of the record file that is being written at the moment) or "q" to quit.
 

@@ -79,12 +79,12 @@ function record_and_play {
     job_wget_id=$!
     echo OK
 
+    echo "Writing file ./${recording}"
+
     # In case of large (e.g .flac) audio streams it's possible that your hear no playback.
     # You can either increase wait_seconds to 4 or just restart the playback manually by entering 'r' after few seconds.
     local wait_seconds=1
-    echo -n "Waiting.. "
     sleep $wait_seconds
-    echo OK
 
     restarting_playback
 }

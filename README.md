@@ -7,6 +7,7 @@ The names of the ripped audio files contain a timestamp and the radio station na
 ## Prerequisites
 
 The following need to be installed:
+* gawk
 * wget
 * sed
 * vlc

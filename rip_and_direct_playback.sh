@@ -1,30 +1,31 @@
 #!/bin/bash
 
+
+
 function init_stations {
+
+    local station_text_file=${station_file}.txt
+    /bin/rm -fr ${station_text_file}
+    ./print_csv.sh ${station_file} > ${station_text_file}
     
+    station_index=0
     local line
-    while read line; do                        
-        local line_number=$(get_station_number)
-        local j=0
-        local ifs_old=${IFS}
-        IFS=$','
-        for detail in $line; do
-            if [ $j -eq 0 ]; then
-                station[$station_index]="$detail"
-            elif [ $j -eq 1 ]; then
-                suffix[$station_index]="$detail"
-            elif [ $j -eq 2 ]; then
-                url[$station_index]="$detail"
-            else                
-                echo "More than 2 commas in line $line_number of file \"$station_file\":"
-                echo $line
-                exit 1                
-            fi
-            j=$(( $j + 1 ))
-        done
-        IFS=${ifs_old}
-        station_index=$line_number
-    done < $station_file
+    local j=0
+    while read line; do      
+        if [ $j -eq 0 ]; then
+            station[$station_index]="$line"
+            j=1
+        elif [ $j -eq 1 ]; then
+            suffix[$station_index]="$line"
+            j=2
+        elif [ $j -eq 2 ]; then
+            url[$station_index]="$line"
+            j=0
+            station_index=$(( station_index + 1 ))
+        fi
+    done < ${station_text_file}
+
+    /bin/rm -fr ${station_text_file}
 }
 
 function increment_station_index {

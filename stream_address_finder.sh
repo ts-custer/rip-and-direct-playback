@@ -2,8 +2,8 @@
 
 
 function download_playlist {
-    mkdir -p tmp_radio_recorder
-    cd tmp_radio_recorder
+    mkdir -p tmp_stream_address_finder
+    cd tmp_stream_address_finder
     /bin/rm -f $playlist
     wget -q -O $playlist $input
 }

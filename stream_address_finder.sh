@@ -9,8 +9,7 @@ function download_playlist {
 }
 
 function is_beginning_with_http {
-    local line=$1
-    [[ $line == http* ]] || [[ $line == HTTP* ]]
+    [[ $1 == [hH][tT][tT][pP]* ]]
 }
 
 function get_first_http_line_of_playlist {

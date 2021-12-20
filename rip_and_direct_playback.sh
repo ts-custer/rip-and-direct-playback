@@ -28,13 +28,13 @@ function init_stations {
     /bin/rm -fr ${station_text_file}
 }
 
-function increment_station_index {
+function get_next_station_index {
 
-    next_index=$(( ${station_index} + 1 ))
-    if [ $next_index -ge ${#url[@]} ] || [ $next_index -lt 0 ]; then
-        station_index=0
+    local next_index=$(( $1 + 1 ))
+    if [ $next_index -ge ${#url[@]} ]; then
+        echo 0
     else 
-        station_index=$next_index
+        echo $next_index
     fi    
 }
 
@@ -105,9 +105,19 @@ function restarting_playback {
 }
 
 function selection {
-    
+
+    local next_index
+    local next_number
+    if [ $job_wget_id -lt 0 ]; then
+        next_index=0
+        next_number=1
+    else
+        next_index=$(get_next_station_index $station_index)
+        next_number=$(( $next_index + 1 ))
+    fi
+
     echo
-    echo -n "Enter number of the station to record and play ($(get_station_number)).."
+    echo -n "Enter number of the station to record and play ($next_number).."
     read input
 
     if [[ $input == "q" ]] || [[ $input == "Q" ]]; then
@@ -116,12 +126,19 @@ function selection {
         print_stations
     elif [[ $input == "r" ]] || [[ $input == "R" ]]; then    
         restarting_playback
-    else
-        if [ ! -z $input ]; then
-            station_index=$(( $input - 1))
-        fi
+    elif [[ $input == "-" ]]; then
+        local si=$station_index
+        station_index=$previous_station_index
+        previous_station_index=$si
         record_and_play
-        increment_station_index        
+    elif [[ $input != "" ]]; then
+        previous_station_index=$station_index
+        station_index=$(( $input - 1))
+        record_and_play
+    else 
+        previous_station_index=$station_index
+        station_index=$next_index
+        record_and_play
     fi
 }
 
@@ -162,13 +179,15 @@ init_stations
 
 echo
 echo "s) Print stations"
-echo "r) Restarting playback"
+echo "r) Restart playback"
+echo "-) Select previous station"
 echo "q) Quit"
 print_stations
 
 trap quit SIGINT
 
 station_index=0
-while true; do
+previous_station_index=0
+while true; do    
     selection
 done

@@ -14,10 +14,9 @@ function is_beginning_with_http {
 
 function get_first_http_line_of_playlist {
 
-    # This adds \n at the end of the file only if it doesn’t already end with a newline.
-    # See https://unix.stackexchange.com/questions/31947/how-to-add-a-newline-to-the-end-of-a-file
-    sed -i -e '$a\' $playlist
-    # -> necessary with http://www.dradio.de/streaming/dkultur.m3u !
+    # Add a newline character at the end of the file.
+    # It's necessary if file ends without newline (e.g. http://www.dradio.de/streaming/dkultur.m3u)
+    echo "" >> $playlist
 
     local line
     while read line; do        

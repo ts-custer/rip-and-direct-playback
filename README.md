@@ -33,7 +33,8 @@ $ ./rip_and_direct_playback.sh
 
 ```
 s) Print stations
-r) Restarting playback
+r) Restart playback
+-) Select previous station
 q) Quit
 
 1) Radio Caroline
@@ -67,7 +68,7 @@ Note that the record file "2021-12-10_12-07-17 Radio Caroline.mp3" is stored in 
 
 Press Enter again to record and listen the second station or enter the number of the station you would like to hear.
 
-Enter "s" to see the station list again, "r" to restarting the playback (of the record file that is being written at the moment) or "q" to quit.
+Enter "s" to see the station list again, "r" to restarting the playback (of the record file that is being written at the moment), "-" to record and listen to the previous station. Or "q" to quit.
 
 ## Known Problems
 

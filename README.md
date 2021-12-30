@@ -16,7 +16,7 @@ The following need to be installed:
 
 Open `internet_radios.csv` with MS Excel or Libre Office Calc and enter the internet radio stations you would like to listen and record:
 
-![Screenshot](https://user-images.githubusercontent.com/74509742/145563746-276b50de-217e-442f-963d-062924ad98d9.png)
+![Screenshot3](https://user-images.githubusercontent.com/74509742/147779563-286a4a9b-b100-4873-96fc-2ed7a5788792.png)
 
 Make `rip_and_direct_playback.sh` and `stream_address_finder.sh` executable: 
 ```

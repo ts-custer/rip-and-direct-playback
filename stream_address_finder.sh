@@ -14,9 +14,8 @@ function is_beginning_with_http {
 
 function get_first_http_line_of_playlist {
 
-    # Add a newline character at the end of the file.
-    # It's necessary if file ends without newline (e.g. http://www.dradio.de/streaming/dkultur.m3u)
-    echo "" >> $playlist
+    # Modify the playlist slightly
+    sed -i -f ../playlist_edit.sed $playlist
 
     local line
     while read line; do        
@@ -27,9 +26,19 @@ function get_first_http_line_of_playlist {
 }
 
 function find_stream_address {
-    if [[ ${input} != *.${playlist_suffix} ]]; then
+
+    local playlist_suffix
+    playlist=""
+    for playlist_suffix in "${playlist_suffixes[@]}"; do
+        if [[ ${input} == *.${playlist_suffix} ]]; then
+            playlist="playlist.${playlist_suffix}"
+            break        
+        fi
+    done
+
+    if [[ ${playlist} == "" ]]; then
         echo $input
-    else 
+    else
         if download_playlist; then
             echo $(get_first_http_line_of_playlist)
             /bin/rm -f $playlist
@@ -42,11 +51,12 @@ function find_stream_address {
 ###########################################################
 
 if [ ! ${#} -eq 1 ]; then
-    echo Usage: stream_address_finder.sh URL
+    echo Usage: $0 URL
     exit 1
 fi
 
+# Supported playlist types (suffixes)
+declare -a playlist_suffixes=(m3u pls)
+
 input=$1
-playlist_suffix=m3u
-playlist="playlist.${playlist_suffix}"
 echo $(find_stream_address)

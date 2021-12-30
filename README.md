@@ -7,6 +7,7 @@ The names of the ripped audio files contain a timestamp and the radio station na
 ## Prerequisites
 
 The following need to be installed:
+* sed
 * gawk
 * wget
 * vlc
@@ -42,7 +43,8 @@ q) Quit
 3) New Classical FM
 4) Czech Radio Vltava 224kbps OGG
 5) Deutschlandfunk 256kbps AAC
-6) Nativa FM
+6) RBB Kultur
+7) Nativa FM
 
 Enter number of the station to record and play (1)..
 ``` 

@@ -7,6 +7,8 @@ function init_stations {
     local station_text_file=${station_file}.txt
     /bin/rm -fr ${station_text_file}
     ./print_csv.sh ${station_file} > ${station_text_file}
+
+    sed -i -f station_text_file_edit.sed ${station_text_file}
     
     station_index=0
     local line

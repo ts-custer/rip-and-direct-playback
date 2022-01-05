@@ -7,27 +7,25 @@ The names of the ripped audio files contain a timestamp and the radio station na
 ## Prerequisites
 
 The following need to be installed:
+* tr
 * sed
-* gawk
 * wget
 * vlc
 
 ## Usage
 
-Open `internet_radios.csv` with MS Excel or Libre Office Calc and enter the internet radio stations you would like to listen and record:
+Edit `internet_radios.txt` with a text editor, enter the radio stations of your choice.
 
-![Screenshot3](https://user-images.githubusercontent.com/74509742/147779563-286a4a9b-b100-4873-96fc-2ed7a5788792.png)
-
-Make `rip_and_direct_playback.sh` and `stream_address_finder.sh` executable: 
+Make `rip_and_direct_playback.sh`, `stream_address_finder.sh` and `print_internet_radios.sh` executable: 
 ```
 $ chmod +x rip_and_direct_playback.sh
 $ chmod +x stream_address_finder.sh
-$ chmod +x print_csv.sh
+$ chmod +x print_internet_radios.sh
 ```
 
 Start **rip-and-direct-playback**:
 ```
-$ ./rip_and_direct_playback.sh
+$ ./rip_and_direct_playback.sh internet_radios.txt
 ```
 
 **rip-and-direct-playback** will present you the following options:
@@ -38,27 +36,27 @@ r) Restart playback
 -) Select previous station
 q) Quit
 
-1) Radio Caroline
-2) NDR Kultur
+1) Radio Caroline (MP3)
+2) NDR Kultur (MP3)
 3) New Classical FM
-4) Czech Radio Vltava 224kbps OGG
-5) Deutschlandfunk 256kbps AAC
-6) RBB Kultur
-7) Nativa FM
+4) Czech Radio Vltava 224kbps
+5) Deutschlandfunk 256kbps (AAC)
+6) RBB Kultur (MP3)
+7) Nativa FM (AAC)
 
 Enter number of the station to record and play (1)..
 ``` 
-Just press Enter to record and listen the first radio station ("Radio Caroline" in our example).
+Just press Enter to record and listen the first radio station ("Radio Caroline (MP3)" in our example).
 
 You will see:
 
 ```
-***** 1) Radio Caroline *****
+***** 1) Radio Caroline (MP3) *****
 
 Finding the real stream address:
 http://sc8.radiocaroline.net:8040/; -> http://sc8.radiocaroline.net:8040/;
 Starting recording.. OK
-Writing file ./recordings/2021-12-10_12-07-17 Radio Caroline.mp3
+Writing file ./recordings/2021-12-10_12-07-17 Radio Caroline (MP3).mp3
 Starting playback.. OK
 
 VLC media player 3.0.9.2 Vetinari (revision 3.0.9.2-0-gd4c1aefe4d)
@@ -66,7 +64,7 @@ VLC media player 3.0.9.2 Vetinari (revision 3.0.9.2-0-gd4c1aefe4d)
 
 Enter number of the station to record and play (2)..
 ```
-Note that the record file "2021-12-10_12-07-17 Radio Caroline.mp3" is stored in the new created subfolder "recordings".
+Note that the record file "2021-12-10_12-07-17 Radio Caroline (MP3).mp3" is stored in the new created subfolder "recordings".
 
 Press Enter again to record and listen the second station or enter the number of the station you would like to hear.
 

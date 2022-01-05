@@ -1,0 +1,24 @@
+#Radio Station Name (audio format)
+#URL
+
+Radio Caroline (MP3)
+http://sc8.radiocaroline.net:8040/;
+
+NDR Kultur (MP3)
+http://icecast.ndr.de/ndr/ndrkultur/live/mp3/128/stream.mp3
+
+New Classical FM
+http://stream.abacast.net/playlist/mzmedia-cfmzfmmp3-ibc2.m3u
+
+Czech Radio Vltava 224kbps
+http://amp.cesnet.cz:8000/cro3-256.ogg
+
+Deutschlandfunk 256kbps (AAC)
+https://st01.sslstream.dlf.de/dlf/01/high/aac/stream.aac
+
+RBB Kultur (MP3)
+http://rbbkultur.de/live.pls
+
+Nativa FM (AAC)
+http://audio.flaresoft.com.br:9330/;
+

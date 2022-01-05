@@ -4,12 +4,10 @@
 
 function init_stations {
 
-    local station_text_file=${station_file}.txt
-    /bin/rm -fr ${station_text_file}
-    ./print_csv.sh ${station_file} > ${station_text_file}
-
-    sed -i -f station_text_file_edit.sed ${station_text_file}
-    
+    local tmp_station_file=tmp_${station_file}
+    /bin/rm -fr ${tmp_station_file}
+    ./print_internet_radios.sh ${station_file} > ${tmp_station_file}
+   
     station_index=0
     local line
     local j=0
@@ -18,16 +16,16 @@ function init_stations {
             station[$station_index]="$line"
             j=1
         elif [ $j -eq 1 ]; then
-            suffix[$station_index]="$line"
+            url[$station_index]="$line"
             j=2
         elif [ $j -eq 2 ]; then
-            url[$station_index]="$line"
+            suffix[$station_index]="$line"
             j=0
             station_index=$(( station_index + 1 ))
         fi
-    done < ${station_text_file}
+    done < ${tmp_station_file}
 
-    /bin/rm -fr ${station_text_file}
+    /bin/rm -fr ${tmp_station_file}
 }
 
 function get_next_station_index {
@@ -166,8 +164,13 @@ function quit {
 
 ###########################################################
 
+if [ ${#} -lt 1 ]; then
+    echo "Usage: ${0} <internet radios file>"
+    exit 1
+fi
+
 # Initiate variables
-station_file="internet_radios.csv"
+station_file=$1
 recordings_folder=recordings
 declare -a station
 declare -a suffix

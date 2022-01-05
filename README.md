@@ -36,27 +36,27 @@ r) Restart playback
 -) Select previous station
 q) Quit
 
-1) Radio Caroline (MP3)
-2) NDR Kultur (MP3)
+1) Radio Caroline MP3
+2) NDR Kultur
 3) New Classical FM
 4) Czech Radio Vltava 224kbps
-5) Deutschlandfunk 256kbps (AAC)
-6) RBB Kultur (MP3)
-7) Nativa FM (AAC)
+5) Deutschlandfunk 256kbps AAC
+6) RBB Kultur MP3
+7) Nativa FM AAC
 
 Enter number of the station to record and play (1)..
 ``` 
-Just press Enter to record and listen the first radio station ("Radio Caroline (MP3)" in our example).
+Just press Enter to record and listen the first radio station ("Radio Caroline" in our example).
 
 You will see:
 
 ```
-***** 1) Radio Caroline (MP3) *****
+***** 1) Radio Caroline MP3 *****
 
 Finding the real stream address:
 http://sc8.radiocaroline.net:8040/; -> http://sc8.radiocaroline.net:8040/;
 Starting recording.. OK
-Writing file ./recordings/2021-12-10_12-07-17 Radio Caroline (MP3).mp3
+Writing file ./recordings/2021-12-10_12-07-17 Radio Caroline MP3.mp3
 Starting playback.. OK
 
 VLC media player 3.0.9.2 Vetinari (revision 3.0.9.2-0-gd4c1aefe4d)
@@ -64,7 +64,7 @@ VLC media player 3.0.9.2 Vetinari (revision 3.0.9.2-0-gd4c1aefe4d)
 
 Enter number of the station to record and play (2)..
 ```
-Note that the record file "2021-12-10_12-07-17 Radio Caroline (MP3).mp3" is stored in the new created subfolder "recordings".
+Note that the record file "2021-12-10_12-07-17 Radio Caroline MP3.mp3" is stored in the new created subfolder "recordings".
 
 Press Enter again to record and listen the second station or enter the number of the station you would like to hear.
 

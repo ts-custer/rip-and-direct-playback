@@ -4,7 +4,7 @@
 
 function init_stations {
 
-    local tmp_station_file=tmp_${station_file}
+    local tmp_station_file=.tmp_${station_file}
     /bin/rm -fr ${tmp_station_file}
     ./print_internet_radios.sh ${station_file} > ${tmp_station_file}
    
@@ -162,7 +162,12 @@ function quit {
     exit 0
 }
 
-###########################################################
+##################### START #########################
+
+! which tr > /dev/null && echo tr must be installed. && exit 1
+! which sed > /dev/null && echo sed must be installed. && exit 1
+! which wget > /dev/null && echo wget must be installed. && exit 1
+! which vlc > /dev/null && echo vlc must be installed. && exit 1
 
 if [ ${#} -lt 1 ]; then
     echo "Usage: ${0} <internet radios file>"
@@ -173,8 +178,8 @@ fi
 station_file=$1
 recordings_folder=recordings
 declare -a station
-declare -a suffix
 declare -a url
+declare -a suffix
 station_index=0
 recording=""
 job_wget_id=-1

@@ -36,7 +36,7 @@ function find_stream_address {
         fi
     done
 
-    if [[ ${playlist} == "" ]]; then
+    if [ -z ${playlist} ]; then
         echo $input
     else
         if download_playlist; then

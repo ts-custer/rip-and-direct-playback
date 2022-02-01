@@ -2,8 +2,6 @@
 
 
 function download_playlist {
-    mkdir -p tmp_stream_address_finder
-    cd tmp_stream_address_finder
     /bin/rm -f $playlist
     wget -q -O $playlist $input
 }
@@ -14,13 +12,16 @@ function is_beginning_with_http {
 
 function get_first_http_line_of_playlist {
 
-    # Modify the playlist slightly
-    sed -i -f ../playlist_edit.sed $playlist
+    # Remove leading "File..=" of each line (necessary for .pls playlists)
+    sed -i 's/^[Ff][Ii][Ll][Ee][0-9]*[0-9]*=//' $playlist
 
     local line
-    while read line; do        
-        is_beginning_with_http $line && echo $line && return
+    old_ifs=$IFS
+    IFS=$'\n'
+    for line in $(cat $playlist); do
+        is_beginning_with_http $line && IFS=$old_ifs && echo $line && return
     done < $playlist
+    IFS=$old_ifs
     # no http found!
     echo
 }
@@ -31,7 +32,7 @@ function find_stream_address {
     playlist=""
     for playlist_suffix in "${playlist_suffixes[@]}"; do
         if [[ ${input} == *.${playlist_suffix} ]]; then
-            playlist="playlist.${playlist_suffix}"
+            playlist="tmp_stream_address_finder_playlist.${playlist_suffix}"
             break        
         fi
     done

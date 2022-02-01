@@ -10,6 +10,7 @@ The following need to be installed:
 * tr
 * sed
 * wget
+* screen
 * vlc
 
 ## Usage
@@ -59,8 +60,6 @@ Starting recording.. OK
 Writing file ./recordings/2021-12-10_12-07-17 Radio Caroline MP3.mp3
 Starting playback.. OK
 
-VLC media player 3.0.9.2 Vetinari (revision 3.0.9.2-0-gd4c1aefe4d)
-[000055f8df350300] dummy interface: using the dummy interface module...
 
 Enter number of the station to record and play (2)..
 ```
@@ -70,10 +69,6 @@ Press Enter again to record and listen the second station or enter the number of
 
 Enter "s" to see the station list again, "r" to restarting the playback (of the record file that is being written at the moment), "-" to record and listen to the previous station. Or "q" to quit.
 
-## Known Problems
+## Known Problem
 
 In case of large (e.g .flac) audio streams or slow internet connections it's possible that you don't hear anything. → Then enter "r" to restart the playback.
-
-VLC creates output on console (e.g. `[000012ab34..] dummy interface: using the dummy interface module...`) that could not be suppressed.
-
-

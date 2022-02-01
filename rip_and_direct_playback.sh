@@ -96,7 +96,8 @@ function restarting_playback {
 
     if [ ! -z "${recording}" ]; then
         echo -n "Starting playback.. "
-        cvlc "${recording}" &
+        # cvlc "${recording}" &
+        screen -D -m -S my-vlc-server cvlc -I rc "${recording}" &
         job_cvlc_id=$!
         echo OK
         echo
@@ -167,6 +168,7 @@ function quit {
 ! which tr > /dev/null && echo tr must be installed. && exit 1
 ! which sed > /dev/null && echo sed must be installed. && exit 1
 ! which wget > /dev/null && echo wget must be installed. && exit 1
+! which screen > /dev/null && echo screen must be installed. && exit 1
 ! which vlc > /dev/null && echo vlc must be installed. && exit 1
 
 if [ ${#} -lt 1 ]; then

@@ -99,6 +99,7 @@ function restarting_playback {
         # cvlc "${recording}" &
         screen -D -m -S my-vlc-server cvlc -I rc "${recording}" &
         job_cvlc_id=$!
+        is_playing=true
         echo OK
         echo
         sleep 1
@@ -127,6 +128,14 @@ function selection {
         print_stations
     elif [[ $input == "r" ]] || [[ $input == "R" ]]; then    
         restarting_playback
+    elif [[ $input == "p" ]] || [[ $input == "P" ]]; then
+        screen -S my-vlc-server -p 0 -X stuff "pause^M"
+        if $is_playing; then
+          echo "PAUSE! -> Enter p again to go on with playback"
+          is_playing=false
+        else
+          is_playing=true
+        fi
     elif [[ $input == "-" ]]; then
         local si=$station_index
         station_index=$previous_station_index
@@ -191,6 +200,7 @@ init_stations
 
 echo
 echo "s) Print stations"
+echo "p) Pause playback"
 echo "r) Restart playback"
 echo "-) Select previous station"
 echo "q) Quit"

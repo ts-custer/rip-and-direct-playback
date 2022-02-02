@@ -2,7 +2,7 @@
 #URL
 
 Radio Caroline MP3
-http://sc8.radiocaroline.net:8040/;
+http://sc8.radiocaroline.net:8040/
 
 NDR Kultur
 http://icecast.ndr.de/ndr/ndrkultur/live/mp3/128/stream.mp3
@@ -20,5 +20,5 @@ RBB Kultur MP3
 http://rbbkultur.de/live.pls
 
 Nativa FM AAC
-http://audio.flaresoft.com.br:9330/;
+http://audio.flaresoft.com.br:9330/
 

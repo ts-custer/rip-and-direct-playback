@@ -26,13 +26,16 @@ $ chmod +x print_internet_radios.sh
 
 Start **rip-and-direct-playback**:
 ```
-$ ./rip_and_direct_playback.sh internet_radios.txt
+./rip_and_direct_playback.sh internet_radios.txt
 ```
 
-**rip-and-direct-playback** will present you the following options:
+The you will see:
 
 ```
+RIP-AND-DIRECT-PLAYBACK  ***************************************** (C) TS CUSTER
+
 s) Print stations
+p) Pause playback
 r) Restart playback
 -) Select previous station
 q) Quit
@@ -45,29 +48,28 @@ q) Quit
 6) RBB Kultur MP3
 7) Nativa FM AAC
 
-Enter number of the station to record and play (1)..
+Enter command key or station number (1)..
 ``` 
 Just press Enter to record and listen the first radio station ("Radio Caroline" in our example).
 
-You will see:
+You will see some additional lines:
 
 ```
-***** 1) Radio Caroline MP3 *****
+SELECTED:  1) Radio Caroline MP3
 
 Finding the real stream address:
-http://sc8.radiocaroline.net:8040/; -> http://sc8.radiocaroline.net:8040/;
+http://sc8.radiocaroline.net:8040/ -> http://sc8.radiocaroline.net:8040/
 Starting recording.. OK
-Writing file ./recordings/2021-12-10_12-07-17 Radio Caroline MP3.mp3
+Writing file ./recordings/2022-02-02_19-00-12 Radio Caroline MP3.mp3
 Starting playback.. OK
 
-
-Enter number of the station to record and play (2)..
+Enter command key or station number (2)..
 ```
-Note that the record file "2021-12-10_12-07-17 Radio Caroline MP3.mp3" is stored in the new created subfolder "recordings".
+Note that the record file "2022-02-02_19-00-12 Radio Caroline MP3.mp3" is stored in the new created subfolder "recordings".
 
-Press Enter again to record and listen the second station or enter the number of the station you would like to hear.
+Press "Enter" again to record and listen the second station or enter the number of the station you would like to hear.
 
-Enter "s" to see the station list again, "r" to restarting the playback (of the record file that is being written at the moment), "-" to record and listen to the previous station. Or "q" to quit.
+Or you can enter one of the command keys: s) Print stations, p) Pause playback, r) Restart playback, -) Select previous station, q) Quit
 
 ## Known Problem
 

@@ -31,7 +31,7 @@ Start **rip-and-direct-playback**:
 ./rip_and_direct_playback.sh internet_radios.txt
 ```
 
-The you will see:
+Then you will see:
 
 ```
 RIP-AND-DIRECT-PLAYBACK  ***************************************** (C) TS CUSTER
@@ -52,7 +52,7 @@ q) Quit
 
 Enter command key or station number (1)..
 ``` 
-Just press Enter to record and listen the first radio station ("Radio Caroline" in our example).
+Just press "Enter" to record and listen the first radio station ("Radio Caroline" in our example).
 
 You will see some additional lines:
 

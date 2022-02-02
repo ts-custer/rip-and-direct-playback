@@ -114,7 +114,8 @@ function selection {
     if [[ $input == "q" ]] || [[ $input == "Q" ]]; then
         quit
     elif [[ $input == "s" ]] || [[ $input == "S" ]]; then
-        print_commands_and_stations
+        clear
+        print_stations
     elif [[ $input == "r" ]] || [[ $input == "R" ]]; then
         restarting_playback
     elif [[ $input == "p" ]] || [[ $input == "P" ]]; then
@@ -173,11 +174,11 @@ function print_commands_and_stations {
     echo "r) Restart playback"
     echo "-) Select previous station"
     echo "q) Quit"
+    echo
     print_stations
 }
 
 function print_stations {
-    echo
     local i
     for ((i=0; i < ${#url[@]}; i++)); do
         local number=$(( $i + 1 ))

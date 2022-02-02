@@ -15,9 +15,9 @@ function get_suffix_by_last_element {
     for element in $1; do
         last_element=$element
     done
-    local suffix=$(echo $last_element | tr -d '()')
+    local suffix=$(echo "$last_element" | tr -d '()')
     if [[ $suffix == [mM][pP][3] ]] || [[ $suffix == [aA][aA][cC] ]] || [[ $suffix == [oO][gG][gG] ]] || [[ $suffix == [fF][lL][aA][cC] ]]; then
-        echo $(echo $suffix | tr A-Z a-z)
+        echo "$suffix" | tr '[:upper:]' '[:lower:]'
     else
         echo
     fi
@@ -42,18 +42,18 @@ function find_suffix_in_url {
 
 input_file=$1
 suffix=""
-while read line; do
+while read -r line; do
     if [[ ! -z "$line" ]] && ! is_beginning_with_number_sign "$line" ; then
         echo "$line"
         if ! is_beginning_with_http "$line"; then                        
             suffix=$(get_suffix_by_last_element "$line")
         else
-            if [ -z $suffix ]; then 
-                suffix=$(find_suffix_in_url $line)
+            if [ -z "$suffix" ]; then
+                suffix=$(find_suffix_in_url "$line")
             fi
-            echo $suffix
+            echo "$suffix"
         fi
     else
         suffix=""
     fi
-done < $input_file
+done < "$input_file"

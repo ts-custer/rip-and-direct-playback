@@ -5,13 +5,13 @@
 function init_stations {
 
     local tmp_station_file=.tmp_${station_file}
-    /bin/rm -fr ${tmp_station_file}
-    ./print_internet_radios.sh ${station_file} > ${tmp_station_file}
+    /bin/rm -fr "${tmp_station_file}"
+    ./print_internet_radios.sh "${station_file}" > "${tmp_station_file}"
    
     station_index=0
     local line
     local j=0
-    while read line; do      
+    while read -r line; do
         if [ $j -eq 0 ]; then
             station[$station_index]="$line"
             j=1
@@ -23,9 +23,9 @@ function init_stations {
             j=0
             station_index=$(( station_index + 1 ))
         fi
-    done < ${tmp_station_file}
+    done < "${tmp_station_file}"
 
-    /bin/rm -fr ${tmp_station_file}
+    /bin/rm -fr "${tmp_station_file}"
 }
 
 function get_next_station_index {
@@ -61,13 +61,13 @@ function record_and_play {
     echo
     echo "Finding the real stream address:"
     echo -n "${url[${station_index}]} -> "
-    local stream_address=$(./stream_address_finder.sh ${url[${station_index}]})
-    echo $stream_address
+    local stream_address=$(./stream_address_finder.sh "${url[${station_index}]}")
+    echo "$stream_address"
 
     # Create filename for recording
     local now=$(date +"%Y-%m-%d_%H-%M-%S")
     local sfx=${suffix[${station_index}]}
-    if [ -z $sfx ]; then
+    if [ -z "$sfx" ]; then
         sfx=audio
     fi
     recording="${recordings_folder}/${now} ${station[${station_index}]}.${sfx}"
@@ -76,7 +76,7 @@ function record_and_play {
     mkdir -p "$recordings_folder"
 
     echo -n "Starting recording.. "
-    wget -q -O "$recording" $stream_address &
+    wget -q -O "$recording" "$stream_address" &
     job_wget_id=$!
     echo OK
 
@@ -96,7 +96,6 @@ function restarting_playback {
 
     if [ ! -z "${recording}" ]; then
         echo -n "Starting playback.. "
-        # cvlc "${recording}" &
         screen -D -m -S my-vlc-server cvlc -I rc "${recording}" &
         job_cvlc_id=$!
         is_playing=true
@@ -120,7 +119,7 @@ function selection {
 
     echo
     echo -n "Enter number of the station to record and play ($next_number).."
-    read input
+    read -r input
 
     if [[ $input == "q" ]] || [[ $input == "Q" ]]; then
         quit

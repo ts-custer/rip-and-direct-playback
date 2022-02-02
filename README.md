@@ -4,6 +4,8 @@ A simple Bash script to record internet radio (aka "stream ripping") and playbac
 
 The names of the ripped audio files contain a timestamp and the radio station name, e.g. `2021-12-09_16-15-00 New Classical FM.mp3`. The audio files will be stored in a new created subfolder "recordings". So after you have stopped **rip-and-direct-playback** you can listen to them again (or delete them of course)!
 
+![Screenshot5](https://user-images.githubusercontent.com/74509742/152213910-f935d177-a4b7-4868-889d-65e562b44e12.png)
+
 ## Prerequisites
 
 The following need to be installed:

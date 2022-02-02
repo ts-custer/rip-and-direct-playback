@@ -1,7 +1,6 @@
 #!/bin/bash
 
 
-
 function init_stations {
 
     local tmp_station_file=.tmp_${station_file}
@@ -42,22 +41,14 @@ function get_station_number {
     echo $(( $station_index + 1 ))
 }
 
-function print_stations {
-    echo
-    local i
-    for ((i=0; i < ${#url[@]}; i++)); do
-        local number=$(( $i + 1 ))
-        echo "$number) ${station[${i}]}"
-    done
-}
-
 function record_and_play {
 
     # Terminate old recording job
     stop_recording_job
 
     echo
-    echo "***** $(get_station_number)) ${station[station_index]} *****"    
+    echo
+    echo "SELECTED:  $(get_station_number)) ${station[station_index]}"
     echo
     echo "Finding the real stream address:"
     echo -n "${url[${station_index}]} -> "
@@ -94,13 +85,12 @@ function restarting_playback {
 
     stop_playback_job
 
-    if [ ! -z "${recording}" ]; then
+    if [ -n "${recording}" ]; then
         echo -n "Starting playback.. "
         screen -D -m -S my-vlc-server cvlc -I rc "${recording}" &
         job_cvlc_id=$!
         is_playing=true
         echo OK
-        echo
         sleep 1
     fi
 }
@@ -118,14 +108,14 @@ function selection {
     fi
 
     echo
-    echo -n "Enter number of the station to record and play ($next_number).."
+    echo -n "Enter command key or station number ($next_number).."
     read -r input
 
     if [[ $input == "q" ]] || [[ $input == "Q" ]]; then
         quit
     elif [[ $input == "s" ]] || [[ $input == "S" ]]; then
-        print_stations
-    elif [[ $input == "r" ]] || [[ $input == "R" ]]; then    
+        print_commands_and_stations
+    elif [[ $input == "r" ]] || [[ $input == "R" ]]; then
         restarting_playback
     elif [[ $input == "p" ]] || [[ $input == "P" ]]; then
         screen -S my-vlc-server -p 0 -X stuff "pause^M"
@@ -136,15 +126,18 @@ function selection {
           is_playing=true
         fi
     elif [[ $input == "-" ]]; then
+        print_commands_and_stations
         local si=$station_index
         station_index=$previous_station_index
         previous_station_index=$si
         record_and_play
     elif [[ $input != "" ]]; then
+        print_commands_and_stations
         previous_station_index=$station_index
         station_index=$(( $input - 1))
         record_and_play
-    else 
+    else
+        print_commands_and_stations
         previous_station_index=$station_index
         station_index=$next_index
         record_and_play
@@ -169,6 +162,27 @@ function quit {
     echo
     echo "Goodbye."
     exit 0
+}
+
+function print_commands_and_stations {
+    clear
+    echo "RIP-AND-DIRECT-PLAYBACK  ***************************************** (C) TS CUSTER"
+    echo
+    echo "s) Print stations"
+    echo "p) Pause playback"
+    echo "r) Restart playback"
+    echo "-) Select previous station"
+    echo "q) Quit"
+    print_stations
+}
+
+function print_stations {
+    echo
+    local i
+    for ((i=0; i < ${#url[@]}; i++)); do
+        local number=$(( $i + 1 ))
+        echo "$number) ${station[${i}]}"
+    done
 }
 
 ##################### START #########################
@@ -197,13 +211,7 @@ job_cvlc_id=-1
 
 init_stations
 
-echo
-echo "s) Print stations"
-echo "p) Pause playback"
-echo "r) Restart playback"
-echo "-) Select previous station"
-echo "q) Quit"
-print_stations
+print_commands_and_stations
 
 trap quit SIGINT
 

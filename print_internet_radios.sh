@@ -43,7 +43,7 @@ function find_suffix_in_url {
 input_file=$1
 suffix=""
 while read -r line; do
-    if [[ ! -z "$line" ]] && ! is_beginning_with_number_sign "$line" ; then
+    if [[ -n "$line" ]] && ! is_beginning_with_number_sign "$line" ; then
         echo "$line"
         if ! is_beginning_with_http "$line"; then                        
             suffix=$(get_suffix_by_last_element "$line")

@@ -111,14 +111,14 @@ function selection {
     echo -n "Enter command key or station number ($next_number).."
     read -r input
 
-    if [[ $input == "q" ]] || [[ $input == "Q" ]]; then
+    if [[ $input == [qQ] ]]; then
         quit
-    elif [[ $input == "s" ]] || [[ $input == "S" ]]; then
-        clear
-        print_stations
-    elif [[ $input == "r" ]] || [[ $input == "R" ]]; then
+#    elif [[ $input == "s" ]] || [[ $input == "S" ]]; then
+#        clear
+#        print_stations
+    elif [[ $input == [rR] ]]; then
         restarting_playback
-    elif [[ $input == "p" ]] || [[ $input == "P" ]]; then
+    elif [[ $input == [pP] ]]; then
         screen -S my-vlc-server -p 0 -X stuff "pause^M"
         if $is_playing; then
           echo "PAUSE! -> Enter p again to go on with playback"
@@ -169,7 +169,7 @@ function print_commands_and_stations {
     clear
     echo "RIP-AND-DIRECT-PLAYBACK  ***************************************** (C) TS CUSTER"
     echo
-    echo "s) Print stations"
+#    echo "s) Print stations"
     echo "p) Pause playback"
     echo "r) Restart playback"
     echo "-) Select previous station"

@@ -36,10 +36,11 @@ Then you will see:
 ```
 RIP-AND-DIRECT-PLAYBACK  ***************************************** (C) TS CUSTER
 
-s) Print stations
 p) Pause playback
 r) Restart playback
--) Select previous station
+b) Select previous station
++) Volume up
+-) Volume down
 q) Quit
 
 1) Radio Caroline MP3
@@ -71,7 +72,7 @@ Note that the record file "2022-02-02_19-00-12 Radio Caroline MP3.mp3" is stored
 
 Press "Enter" again to record and listen the second station or enter the number of the station you would like to hear.
 
-Or you can enter one of the command keys: s) Print stations, p) Pause playback, r) Restart playback, -) Select previous station, q) Quit
+Or you can enter one of the command keys: p) Pause playback, r) Restart playback, b) Select previous station, +) Volume up, -) Volume down, q) Quit
 
 ## Known Problem
 

@@ -126,7 +126,15 @@ function selection {
         else
           is_playing=true
         fi
-    elif [[ $input == "-" ]]; then
+    elif [[ $input =~ ^\++$ ]]; then
+        local steps=${#input}
+        screen -S my-vlc-server -p 0 -X stuff "volup ${steps}^M"
+        print_commands_and_stations
+    elif [[ $input =~ ^-+$ ]]; then
+        local steps=${#input}
+        screen -S my-vlc-server -p 0 -X stuff "voldown ${steps}^M"
+        print_commands_and_stations
+    elif [[ $input == [bB] ]]; then
         print_commands_and_stations
         local si=$station_index
         station_index=$previous_station_index
@@ -172,7 +180,9 @@ function print_commands_and_stations {
 #    echo "s) Print stations"
     echo "p) Pause playback"
     echo "r) Restart playback"
-    echo "-) Select previous station"
+    echo "b) Select previous station"
+    echo "+) Volume up"
+    echo "-) Volume down"
     echo "q) Quit"
     echo
     print_stations

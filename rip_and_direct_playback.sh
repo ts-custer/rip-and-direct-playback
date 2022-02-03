@@ -113,9 +113,6 @@ function selection {
 
     if [[ $input == [qQ] ]]; then
         quit
-#    elif [[ $input == "s" ]] || [[ $input == "S" ]]; then
-#        clear
-#        print_stations
     elif [[ $input == [rR] ]]; then
         restarting_playback
     elif [[ $input == [pP] ]]; then
@@ -140,7 +137,7 @@ function selection {
         station_index=$previous_station_index
         previous_station_index=$si
         record_and_play
-    elif [[ $input != "" ]]; then
+    elif [[ $input =~ ^[0-9]+$ ]]; then
         print_commands_and_stations
         previous_station_index=$station_index
         station_index=$(( $input - 1))
@@ -177,7 +174,6 @@ function print_commands_and_stations {
     clear
     echo "RIP-AND-DIRECT-PLAYBACK  ***************************************** (C) TS CUSTER"
     echo
-#    echo "s) Print stations"
     echo "p) Pause playback"
     echo "r) Restart playback"
     echo "b) Select previous station"

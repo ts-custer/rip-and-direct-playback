@@ -47,9 +47,6 @@ function record_and_play {
     stop_recording_job
 
     echo
-    echo
-    echo "SELECTED:  $(get_station_number)) ${station[station_index]}"
-    echo
     echo "Finding the real stream address:"
     echo -n "${url[${station_index}]} -> "
     local stream_address=$(./stream_address_finder.sh "${url[${station_index}]}")
@@ -70,6 +67,7 @@ function record_and_play {
     wget -q -O "$recording" "$stream_address" &
     job_wget_id=$!
     echo OK
+    fix_start_seconds=$(date +%s)
 
     echo "Writing file ./${recording}"
 
@@ -79,6 +77,8 @@ function record_and_play {
     sleep $wait_seconds
 
     restarting_playback
+
+    playback_status="Direct playback."
 }
 
 function restarting_playback {
@@ -92,59 +92,59 @@ function restarting_playback {
         is_playing=true
         start_seconds=$(date +%s)
         echo OK
-        sleep 1
     fi
 }
 
-function selection {
+function get_input_from_user {
+    calculate_next_station_index
+    local next_number=$(( $next_index + 1 ))
+    echo -n "Enter command key or station number ($next_number).. "
+    read -r input
+    user_input=$input
+}
 
-    local next_index
-    local next_number
+function calculate_next_station_index {
     if [ $job_wget_id -lt 0 ]; then
         next_index=0
-        next_number=1
     else
-        next_index=$(get_next_station_index $station_index)
-        next_number=$(( $next_index + 1 ))
+        local possible_next_index=$(( $station_index + 1 ))
+        if [ $possible_next_index -ge ${#url[@]} ]; then
+            next_index=0
+        else
+            next_index=$possible_next_index
+        fi
     fi
+}
 
-    echo
-    echo -n "Enter command key or station number ($next_number).."
-    read -r input
-
-    if [[ $input == [qQ] ]]; then
+function execute_command {
+    if [[ $user_input == [qQ] ]]; then
         quit
-    elif [[ $input == [rR] ]]; then
+    elif [[ $user_input == [rR] ]]; then
         restarting_playback
-    elif [[ $input == [pP] ]]; then
+        playback_status="Playback was restarted and is delayed."
+    elif [[ $user_input == [pP] ]]; then
         toggle_pause
-    elif [[ $input =~ ^[wW]+$ ]]; then
+    elif [[ $user_input =~ ^[wW]+$ ]]; then
         # TODO check what happens if pause is active and user wants to skip to past
-        seek_playback "$input"
-        print_commands_and_stations
-    elif [[ $input =~ ^\++$ ]]; then
+        seek_playback "$user_input"
+    elif [[ $user_input =~ ^\++$ ]]; then
         # number of plus characters -> steps
         local steps=${#input}
         screen -S my-vlc-server -p 0 -X stuff "volup ${steps}^M"
-        print_commands_and_stations
-    elif [[ $input =~ ^-+$ ]]; then
+    elif [[ $user_input =~ ^-+$ ]]; then
         # number of minus characters -> steps
         local steps=${#input}
         screen -S my-vlc-server -p 0 -X stuff "voldown ${steps}^M"
-        print_commands_and_stations
-    elif [[ $input == [bB] ]]; then
-        print_commands_and_stations
+    elif [[ $user_input == [bB] ]]; then
         local si=$station_index
         station_index=$previous_station_index
         previous_station_index=$si
         record_and_play
-    elif [[ $input =~ ^[0-9]+$ ]]; then
-        print_commands_and_stations
+    elif [[ $user_input =~ ^[0-9]+$ ]]; then
         previous_station_index=$station_index
-        station_index=$(( $input - 1))
+        station_index=$(( $user_input - 1))
         record_and_play
     else
-        print_commands_and_stations
         previous_station_index=$station_index
         station_index=$next_index
         record_and_play
@@ -156,8 +156,10 @@ function toggle_pause {
     if $is_playing; then
         echo "PAUSE! -> Enter p again to go on with playback"
         is_playing=false
+        playback_status="Playback is paused."
     else
         is_playing=true
+        playback_status=$DELAYED_PLAYBACK
     fi
 }
 
@@ -177,6 +179,7 @@ function seek_playback {
         start_seconds=$current_date
     fi
     screen -S my-vlc-server -p 0 -X stuff "seek ${seek_value}^M"
+    playback_status=$DELAYED_PLAYBACK
 }
 
 function stop_recording_job {
@@ -200,7 +203,6 @@ function quit {
 }
 
 function print_commands_and_stations {
-    clear
     echo "RIP-AND-DIRECT-PLAYBACK  ***************************************** (C) TS CUSTER"
     echo
     echo "p) Pause playback"
@@ -221,6 +223,14 @@ function print_stations {
         echo "$number) ${station[${i}]}"
     done
 }
+
+function print_status {
+    echo "SELECTED:  $(get_station_number)) ${station[station_index]}"
+    local file_size=$(stat --printf="%s" "$recording")
+    echo "Current size of \"$recording\": $file_size"
+    echo "$playback_status"
+}
+
 
 ##################### START #########################
 
@@ -245,15 +255,26 @@ station_index=0
 recording=""
 job_wget_id=-1
 job_cvlc_id=-1
+old_file_size=0
+
+DELAYED_PLAYBACK="Delayed playback."
 
 init_stations
 
+clear
 print_commands_and_stations
+echo
 
 trap quit SIGINT
 
 station_index=0
 previous_station_index=0
-while true; do    
-    selection
+while get_input_from_user; do
+    execute_command
+    clear
+    print_commands_and_stations
+    echo
+    print_status
+    echo
 done
+

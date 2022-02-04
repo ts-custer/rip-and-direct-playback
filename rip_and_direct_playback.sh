@@ -90,6 +90,7 @@ function restarting_playback {
         screen -D -m -S my-vlc-server cvlc -I rc "${recording}" &
         job_cvlc_id=$!
         is_playing=true
+        start_seconds=$(date +%s)
         echo OK
         sleep 1
     fi
@@ -116,18 +117,18 @@ function selection {
     elif [[ $input == [rR] ]]; then
         restarting_playback
     elif [[ $input == [pP] ]]; then
-        screen -S my-vlc-server -p 0 -X stuff "pause^M"
-        if $is_playing; then
-          echo "PAUSE! -> Enter p again to go on with playback"
-          is_playing=false
-        else
-          is_playing=true
-        fi
+        toggle_pause
+    elif [[ $input =~ ^[wW]+$ ]]; then
+        # TODO check what happens if pause is active and user wants to skip to past
+        seek_playback "$input"
+        print_commands_and_stations
     elif [[ $input =~ ^\++$ ]]; then
+        # number of plus characters -> steps
         local steps=${#input}
         screen -S my-vlc-server -p 0 -X stuff "volup ${steps}^M"
         print_commands_and_stations
     elif [[ $input =~ ^-+$ ]]; then
+        # number of minus characters -> steps
         local steps=${#input}
         screen -S my-vlc-server -p 0 -X stuff "voldown ${steps}^M"
         print_commands_and_stations
@@ -148,6 +149,34 @@ function selection {
         station_index=$next_index
         record_and_play
     fi
+}
+
+function toggle_pause {
+    screen -S my-vlc-server -p 0 -X stuff "pause^M"
+    if $is_playing; then
+        echo "PAUSE! -> Enter p again to go on with playback"
+        is_playing=false
+    else
+        is_playing=true
+    fi
+}
+
+function seek_playback {
+    local seconds=15
+    local input=$1
+    # number of characters -> step
+    local step=$(( ${#input} * $seconds ))
+    local current_date=$(date +%s)
+    local elapsed_seconds=$(( $current_date - $start_seconds ))
+    local seek_value=$(( $elapsed_seconds - $step ))
+    if [ $seek_value -lt 0 ]; then
+        seek_value=0
+    fi
+    start_seconds=$(( $start_seconds + $step ))
+    if [ $start_seconds -gt "$current_date" ]; then
+        start_seconds=$current_date
+    fi
+    screen -S my-vlc-server -p 0 -X stuff "seek ${seek_value}^M"
 }
 
 function stop_recording_job {
@@ -177,6 +206,7 @@ function print_commands_and_stations {
     echo "p) Pause playback"
     echo "r) Restart playback"
     echo "b) Select previous station"
+    echo "w) Rewind 15 seconds"
     echo "+) Volume up"
     echo "-) Volume down"
     echo "q) Quit"

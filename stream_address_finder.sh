@@ -11,21 +11,30 @@ function is_beginning_with_http {
 }
 
 function get_first_http_line_of_playlist {
-
-    # Remove leading "File..=" of each line (necessary for .pls playlists)
-    sed -i 's/^[Ff][Ii][Ll][Ee][0-9]*[0-9]*=//' "$playlist"
-
     local line
     old_ifs=$IFS
     IFS=$'\n'
     # shellcheck disable=SC2013
     # shellcheck disable=SC2094
     for line in $(cat "$playlist"); do
+        line=$(replace_all_after_file "$line")
         is_beginning_with_http "$line" && IFS=$old_ifs && echo "$line" && return
     done < "$playlist"
     IFS=$old_ifs
     # no http found!
     echo
+}
+
+function replace_all_after_file {
+  local line=$1
+  # e.g. "File1="
+  local search="[Ff][Ii][Ll][Ee][0-9]*="
+  local result="${line#*$search}"
+  if [ -n "$result" ]; then
+    echo "$result"
+  else
+    echo "$line"
+  fi
 }
 
 function find_stream_address {

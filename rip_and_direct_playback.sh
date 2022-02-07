@@ -235,13 +235,14 @@ function print_status {
 ##################### START #########################
 
 ! which tr > /dev/null && echo tr must be installed. && exit 1
-! which sed > /dev/null && echo sed must be installed. && exit 1
 ! which wget > /dev/null && echo wget must be installed. && exit 1
 ! which screen > /dev/null && echo screen must be installed. && exit 1
 ! which vlc > /dev/null && echo vlc must be installed. && exit 1
 
+script_name=$(basename "$0")
+
 if [ ${#} -lt 1 ]; then
-    echo "Usage: ${0} <internet radios file>"
+    echo "Usage: ${script_name} <internet radios file>"
     exit 1
 fi
 

@@ -2,7 +2,7 @@
 
 
 function download_playlist {
-    /bin/rm -f "$playlist"
+    rm -f "$playlist"
     wget -q -O "$playlist" "$input"
 }
 
@@ -43,7 +43,8 @@ function find_stream_address {
     playlist=""
     for playlist_suffix in "${playlist_suffixes[@]}"; do
         if [[ ${input} == *.${playlist_suffix} ]]; then
-            playlist="tmp_stream_address_finder_playlist.${playlist_suffix}"
+            local filename=$(basename "${input}")
+            playlist=$(mktemp -t XXXXXX_"${filename}")
             break        
         fi
     done
@@ -53,7 +54,7 @@ function find_stream_address {
     else
         if download_playlist; then
             get_first_http_line_of_playlist
-            /bin/rm -f "$playlist"
+            rm -f "$playlist"
         else 
             echo
         fi

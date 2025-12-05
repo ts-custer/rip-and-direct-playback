@@ -141,6 +141,8 @@ function execute_command {
         previous_station_index=$si
         record_and_play
     elif [[ $user_input =~ ^[0-9]+$ ]]; then
+        [ $user_input -eq 0 ] && user_input=1
+        [ $user_input -gt ${#url[@]} ] && user_input=${#url[@]}
         previous_station_index=$station_index
         station_index=$(( $user_input - 1))
         record_and_play
@@ -231,6 +233,14 @@ function print_status {
     echo "$playback_status"
 }
 
+function execute_repeating_actions {
+    execute_command
+    clear
+    print_commands_and_stations
+    echo
+    print_status
+    echo
+}
 
 ##################### START #########################
 
@@ -242,12 +252,13 @@ function print_status {
 script_name=$(basename "$0")
 
 if [ ${#} -lt 1 ]; then
-    echo "Usage: ${script_name} <internet radios file>"
+    echo "USAGE: ${script_name} <internet radios file> [station number]"
+    echo "Station number is optional. If provided, the playback will start immediately."
     exit 1
 fi
 
 # Initiate variables
-station_file=$1
+station_file="$1"
 recordings_folder=recordings
 declare -a station
 declare -a url
@@ -262,6 +273,8 @@ DELAYED_PLAYBACK="Delayed playback."
 
 init_stations
 
+[ ${#url[@]} -eq 0 ] && { echo "No stations found in $station_file"; exit 1; }
+
 clear
 print_commands_and_stations
 echo
@@ -270,12 +283,12 @@ trap quit SIGINT
 
 station_index=0
 previous_station_index=0
-while get_input_from_user; do
-    execute_command
-    clear
-    print_commands_and_stations
-    echo
-    print_status
-    echo
-done
 
+if [[ $2 =~ ^[0-9]+$ ]]; then
+  user_input=$2
+  execute_repeating_actions
+fi
+
+while get_input_from_user; do
+  execute_repeating_actions
+done
